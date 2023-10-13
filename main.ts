@@ -1,6 +1,32 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 // Remember to rename these classes and interfaces!
+//
+// TODO
+//
+// In the larger plugin, I would ****ing love literally just a texpane that I can copy paste js into and have it be in global scope
+//
+// For here I want to make it so an express server is launched onload
+// 
+// Settings wise I can choose the folders in my vault it sinks to
+// 
+// Hey I could reuse a bookmark deduping algo for Dani! Almost kind of...
+
+//import { exec } from 'node:child_process';
+import { spawn } from 'child_process';
+
+function run() {
+	const path = "C:\\Users\\grant\\iCloudDrive\\iCloud~md~obsidian\\Shakka\\.obsidian\\plugins\\obsidian-server\\"
+	const server = spawn('node', ['server.js'], {'shell':true, 'cwd':path});
+	
+	server.stdout.on('data', output => {
+		// the output data is captured and printed in the callback
+		console.log("Output: ", output.toString())
+	})
+}
+
+
+
 
 interface MyPluginSettings {
 	mySetting: string;
@@ -16,6 +42,12 @@ export default class MyPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
+		//exec('node server.js', (error, output) => {	})
+
+		// start the `ping google.com` command
+		run()
+
+		
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
@@ -27,6 +59,7 @@ export default class MyPlugin extends Plugin {
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
 		statusBarItemEl.setText('Status Bar Text');
+		
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
