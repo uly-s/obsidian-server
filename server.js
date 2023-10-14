@@ -18,7 +18,7 @@ const saveBookMarks = () => {
 }
 
 let bookmarks = loadBookmarks();
-
+let history = JSON.parse(fs.readFileSync("history.json", 'utf8'));
 
 // SERVER
 const app = express();
@@ -36,18 +36,18 @@ app.post('/sync', (req, res) => {
   console.log(data);
 });
 
-/*
+
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
     }); 
-*/
 
 
 
 
 
 
-let history = fs.readFileSync("history.json", 'utf8');
+
+
 
 
 // HANDLE
@@ -56,27 +56,29 @@ function handle(data) {
   const count = (object) => {
     return Object.keys(object).length;
   }
-  //bookmarks
-  // insert
-  // remove
-  // move
-  // update
   console.log(data);
-  if(count(data.bookmarks) > 1) {
+  if(count(data.bookmarks) >= 1) {
+    bookmarks = loadBookmarks();
     if (data.op === 'insert') {
-      console.log("test 1");
       insertBookmark(bookmarks, data.bookmarks.bookmark);
     }
     else if(data.op === 'remove') {
-      console.log("test 2");
       removeBookmark(bookmarks, data.bookmarks.bookmark);
     }
     else { // === move
-      console.log("test 3");
-      moveBookmark(bookmarks, data.bookmarks.bookmarkToMove, 
-                              data.bookmarks.newParentId, 
-                              data.bookmarks.newIndex)
+      moveBookmark(bookmarks, data.bookmarks.id, data.bookmarks.moveInfo)
     }
+    saveBookMarks();
+  }
+  else if(count(data.history) >= 1) {
+    history = JSON.parse(fs.readFileSync("history.json", 'utf8'));
+    if (data.op === 'append') {
+      history.push(data.history.entry)
+    }
+    fs.writeFileSync("history.json", JSON.stringify(history));
+  }
+  else {
+    console.log('wut');
   }
       
 }
@@ -155,28 +157,9 @@ function removeBookmark(root, bookmarkToRemove) {
 }
 
 // MOVE
-function moveBookmark(root, bookmarkToMove, newParentId, newIndex) {
-  // First remove
-  if (removeBookmark(root, bookmarkToMove)) {
-    // Update parentId and index
-    bookmarkToMove.parentId = newParentId;
-    bookmarkToMove.index = newIndex;
-  
-    // Then insert at new position
-    if (insertBookmark(root, bookmarkToMove)) {
-      return true;
-    }
-  }
-
-  return false;
+function moveBookmark(root, id, moveInfo) {
+  // TODO
 }
-
-
-
-
-
-// need algo to insert / remove bookmark from post.
-// will need one for moved or changed as well
 
 // for history append / delete is fine, itll be 99% append anyway
 // would evantually need (sooner maybe) delete oldest history, would almost certainly be fine to keep only the last year or month etc.
@@ -185,7 +168,6 @@ function moveBookmark(root, bookmarkToMove, newParentId, newIndex) {
 function insertBookmark(tree, bookmark, i) {
   if (tree.id == bookmark.parentId) {
     tree.children.push(bookmark);
-    console.log("inserted");
   }
   else if (tree.hasOwnProperty('children') && i < tree.children.length) {
     insertBookmark(tree.children[i], bookmark, i+1)
@@ -205,5 +187,7 @@ let newmark = {
   "url": "https://2ality.com/2022/07/nodejs-child-process.html"
 };
 
-
+//
+// Would really like to refactor as bookmarks.insert()... history.append etc
+//
 

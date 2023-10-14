@@ -14,6 +14,7 @@ import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Set
 
 //import { exec } from 'node:child_process';
 import { spawn } from 'child_process';
+import * as fs from 'fs';
 
 function run() {
 	const path = "C:\\Users\\grant\\iCloudDrive\\iCloud~md~obsidian\\Shakka\\.obsidian\\plugins\\obsidian-server\\"
@@ -63,8 +64,8 @@ export default class MyPlugin extends Plugin {
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
+			id: 'open-bookmark-modal-simple',
+			name: 'Open bookmark modal',
 			callback: () => {
 				new SampleModal(this.app).open();
 			}
@@ -128,10 +129,13 @@ class SampleModal extends Modal {
 	constructor(app: App) {
 		super(app);
 	}
-
+	
 	onOpen() {
 		const {contentEl} = this;
-		contentEl.setText('Woah!');
+		let bookmarks = JSON.parse(fs.readFileSync("C:\\Users\\grant\\iCloudDrive\\iCloud~md~obsidian\\Shakka\\.obsidian\\plugins\\obsidian-server\\bookmarks.json", 'utf8'));
+		let modalText = JSON.stringify(bookmarks).slice(0, 3000);
+		console.log(modalText);
+		contentEl.setText(modalText);
 	}
 
 	onClose() {
