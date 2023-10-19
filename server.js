@@ -37,18 +37,18 @@ app.post('/sync', (req, res) => {
 });
 
 
-app.listen(3000, () => {
+app.listen(3000, async () => {
     console.log('Server listening on port 3000');
+}); 
+
+export async function listen() {
+  return new Promise((resolve, reject) => {
+    app.listen(3000, async () => {
+    console.log('Server listening on port 3000');
+    resolve();
     }); 
-
-
-
-
-
-
-
-
-
+  });
+}
 
 // HANDLE
 function handle(data) {
@@ -178,6 +178,7 @@ function insertBookmark(tree, bookmark, i) {
 
 }
 
+/*
 let newmark = {
   "dateAdded": 1697212339515,
   "id": "2147",
@@ -185,7 +186,7 @@ let newmark = {
   "parentId": "1",
   "title": "Executing shell commands from Node.js",
   "url": "https://2ality.com/2022/07/nodejs-child-process.html"
-};
+};*/
 
 //
 // Would really like to refactor as bookmarks.insert()... history.append etc

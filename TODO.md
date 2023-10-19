@@ -1,4 +1,13 @@
+## Modularity
+- Keep and make explicit the server/file sync as a module seperate from the obsidian plugin
+- this will entail a third repo
+- borrow from https://github.com/joelseq/obsidian-linkstowr
+
 ## Plugin
+### Specific
+- INITIALIZE command, downloads the two (so far) initial files and sets their location
+
+
 ### Front End
 - need place in vault to store .json files (with setting in panel)
 - need views for bookmarks / history
@@ -32,3 +41,4 @@
 ## Tabs/Workspaces
 
 ## (Distant) Browser Actions
+
