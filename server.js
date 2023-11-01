@@ -37,13 +37,13 @@ app.post('/sync', (req, res) => {
 });
 
 
-app.listen(3000, async () => {
+app.listen(3500, async () => {
     console.log('Server listening on port 3000');
 }); 
 
 export async function listen() {
   return new Promise((resolve, reject) => {
-    app.listen(3000, async () => {
+    app.listen(3500, async () => {
     console.log('Server listening on port 3000');
     resolve();
     }); 
