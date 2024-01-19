@@ -1,96 +1,47 @@
-# Obsidian Sample Plugin
+## Modularity
+- Keep and make explicit the server/file sync as a module seperate from the obsidian plugin
+- this will entail a third repo
+- borrow from https://github.com/joelseq/obsidian-linkstowr
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+## Plugin
+### Specific
+- INITIALIZE command, downloads the two (so far) initial files and sets their location
 
-This project uses Typescript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in Typescript Definition format, which contains TSDoc comments describing what it does.
 
-**Note:** The Obsidian API is still in early alpha and is subject to change at any time!
+### Front End
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- THE PLAN -> ADAPT LINKSTOWR CODE TO SET BOOKMARKS AS HEADERS IN ONE NOTE, LETTING THEM BE LINKED TO INDIVIDUALLY IN OTHER NOTES.
 
-## First time developing plugins?
+- need place in vault to store .json files (with setting in panel)
+- need views for bookmarks / history
+- ability to reference / link bookmarks in notes
+- same with folder of bookmarks (treat like another tree / natural obsidian structure?)
+- embed / download bookmarks / links
+- have as collapsible/modal? Like a 'works cited' or 'references' panel.
+- I would personally really like to be able to not just assign a folder to a note/folder but tie that together with projects/workspaces
+    not as a full project management thing but it would be really nice to filter history according to what 'project'/note/folder was open at the 
+    time etc. The idea is to tie the browser data and obsidian data together into one package
+    add in workspaces later and you have a comprehensive obsidian/browser solution
 
-Quick starting guide for new plugin devs:
+### Back End
+- need initial sync / resync buttons (or just a command)
+- need better setting of paths/file locations
+- fix that janky spawn command so it can work without node.js (express async)
+- redo interfaces to use bookmark.operation pattern
+- WHEN OPENING FILE IN PLUGIN DIR OBSIDIAN CAN'T FIND BOOKMARKS FILE, DIFFERENT CONTEXT OR SOMETHING.
+- Possibly copies of each file, 1 in plugin 1 in vault, with 1 in vault being sanitized and ready for searching etc
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+## Bookmarks
+- interface
+- move operation
+- update
+- display in ui as {title - date added - url}
 
-## Releasing new releases
+## History
+- delete entry
+- reference by range?
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+## Tabs/Workspaces
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## (Distant) Browser Actions
 
-## Adding your plugin to the community plugin list
-
-- Check https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
-
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
-
-## API Documentation
-
-See https://github.com/obsidianmd/obsidian-api
