@@ -6,9 +6,9 @@ import {
     getTemplateContents,
     replaceVariableSyntax,
     useTemplaterPluginInFile,
-  } from './template';
-import {Link} from './types';
-import {replaceIllegalFileNameCharactersInString} from './file';
+  } from './link-stower/template';
+import {Link} from './link-stower/types';
+import {replaceIllegalFileNameCharactersInString} from './link-stower/file';
 // Remember to rename these classes and interfaces!
 //
 // TODO
